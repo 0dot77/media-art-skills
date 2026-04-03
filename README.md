@@ -50,6 +50,37 @@ cd media-art-skills
 
 설치 후 Claude Code를 재시작하면 슬래시 명령어로 스킬을 사용할 수 있다.
 
+## 업데이트
+
+스킬팩은 심링크 방식으로 설치되므로, 저장소를 pull하면 즉시 반영된다.
+
+```bash
+cd media-art-skills
+git pull
+```
+
+`setup`을 다시 실행하거나 Claude Code를 재시작할 필요 없이, pull만 하면 모든 스킬이 최신 버전으로 동작한다.
+
+### 업데이트 확인
+
+pull 후 변경된 내용을 확인하려면:
+
+```bash
+git log --oneline -5    # 최근 커밋 확인
+git diff HEAD~1 --stat  # 마지막 업데이트에서 변경된 파일 목록
+```
+
+### 업데이트가 안 될 때
+
+심링크가 끊어졌거나 스킬이 인식되지 않는 경우, `setup`을 다시 실행한다:
+
+```bash
+./setup          # 글로벌 설치
+./setup --local /path/to/my-project  # 로컬 설치
+```
+
+이미 링크된 스킬은 자동으로 건너뛰고, 새로 추가된 스킬만 등록된다.
+
 ## 스킬 목록
 
 ### 리서치/소싱
