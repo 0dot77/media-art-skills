@@ -118,10 +118,37 @@ Projector B: 7200K / sRGB / 2.2 / 3100 lm
 - /render-check 로 렌더링 결과를 검증할 수 있습니다
 ```
 
+### 3.5. Validation (검증)
+
+분석 결과를 `references/color-spaces.md`와 자동 대조한다:
+
+**색공간 지원 검증:**
+- 제작 소프트웨어의 색공간이 `references/color-spaces.md`의 표준 색공간 목록에 있는지
+- 디스플레이 기기가 해당 색공간을 지원하는지 (gamut 범위 내인지)
+  - DCI-P3 콘텐츠를 sRGB 프로젝터에 출력하려는 경우: ⚠️ + gamut 클리핑 경고
+
+**HDR 호환성 검증:**
+- HDR 콘텐츠인 경우 디스플레이의 HDR 표준 지원 여부 (references/color-spaces.md HDR 테이블)
+- peak brightness가 HDR 표준 요구 사양 이상인지
+
+**멀티 디스플레이 편차 검증:**
+- 같은 모델이라도 개체별 색온도/밝기 편차가 허용 범위(±200K, ±5%) 내인지
+  - 초과 시: ⚠️ + 현장 캘리브레이션 필수 명시
+
+## Data Handoff (입출력 규격)
+
+### Input (읽는 문서)
+| 문서 | 읽는 필드 | 용도 |
+|------|----------|------|
+| `TECH-SPEC.md` | 디스플레이 스펙 → 색공간 설정 | 표시 단계 색공간 |
+| `CONTENT-SPEC.md` | 색공간, 감마 | 제작 단계 색공간 |
+| `references/color-spaces.md` | 색공간 테이블, HDR 표준 | 검증 기준 |
+
 ## Core Principles
 
 1. **파이프라인 전체를 본다** — 한 단계만 맞아도 앞뒤가 안 맞으면 의미 없다.
 2. **구체적 조치** — 문제를 지적하고 끝나지 않고, 어떤 메뉴에서 무엇을 바꿔야 하는지까지.
-3. **레퍼런스 기반** — `references/color-spaces.md` 데이터를 근거로 판단.
-4. **한 번에 하나의 질문**
-5. **언어를 따른다**
+3. **검증 필수** — `references/color-spaces.md`로 색공간 호환성을 대조한다.
+4. **레퍼런스 기반** — `references/color-spaces.md` 데이터를 근거로 판단.
+5. **한 번에 하나의 질문**
+6. **언어를 따른다**

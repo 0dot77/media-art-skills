@@ -61,6 +61,15 @@ description: "Hardware specification search and comparison for media art install
 
 웹 검색이 가능한 경우 최신 제품 정보를 추가로 조사한다.
 
+**요구사항 대조 검증:**
+추천 장비가 프로젝트 요구사항을 실제로 충족하는지 `references/hardware-db.md` 스펙과 대조한다:
+- 프로젝터: 필요 밝기 ≤ 모델 밝기, 필요 throw ratio 범위 내, 해상도 충족
+- LED: 필요 시청 거리 ≥ 피셀 피치 기반 최소 거리, 밝기 조건 충족
+- 미디어서버: 필요 출력 수/해상도 ≤ 최대 출력
+- 센서: 설치 공간 ≤ 유효 범위
+
+DISPLAY-CALC.md나 SITE-SURVEY.md가 있으면 해당 계산 결과와 추천 장비의 스펙을 교차 검증한다.
+
 **비교표 생성 예시:**
 ```
 ── Projector Comparison ─────────────────────────

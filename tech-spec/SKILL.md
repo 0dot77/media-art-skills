@@ -44,7 +44,7 @@ description: "Technical specification writer for media art projects. Use when th
 
 이 선택에 따라 문서 톤과 디테일 수준이 달라진다.
 
-**Q2 — 시스템 구성**
+**Q2 — 시스템 구성 (프로젝트 타입별 기본 구성)**
 > "프로젝트에 포함되는 시스템을 알려주세요."
 
 해당하는 항목을 선택/설명:
@@ -57,6 +57,16 @@ description: "Technical specification writer for media art projects. Use when th
 - Structure (구조물, 마운트, 리깅)
 
 PROJECT.md가 있으면 자동 추론하고 확인만 받는다.
+
+**프로젝트 타입별 기본 시스템 구성:**
+
+| 타입 | 필수 시스템 | 선택 시스템 | 중점 서브시스템 |
+|------|-----------|-----------|--------------|
+| 프로젝션 매핑 | Display, Computing, Network | Audio, Lighting | 프로젝터 + 미디어서버 (워핑/블렌딩) |
+| LED | Display, Computing, Network, Structure | Audio | LED 컨트롤러 + 프로세서 + 전력 |
+| 인터랙티브 | Display, Computing, Network, Sensor | Audio | 센서 + 미디어서버 + 네트워크 (저레이턴시) |
+| 키네틱 | Computing, Structure | Display, Sensor | 모터 컨트롤 + 안전 시스템 + 전력 |
+| 이머시브 | Display, Computing, Network, Audio | Sensor, Lighting | 멀티채널 출력 + 공간 오디오 |
 
 **Q3~QN — 시스템별 상세 (선택된 시스템만)**
 
@@ -104,7 +114,46 @@ SITE-SURVEY.md의 가용 전력과 비교하여 부족 여부를 경고한다.
 - 비트레이트 가이드라인
 - 색공간 (`references/color-spaces.md` 참조)
 
-### 4. Generate TECH-SPEC.md
+### 4. Validation (검증)
+
+기술 사양의 실현 가능성을 `references/`와 프로젝트 문서로 대조한다:
+
+**장비 스펙 검증 (references/hardware-db.md):**
+- 프로젝터: 선택 모델의 해상도, 밝기, throw ratio가 실제 스펙과 일치하는지
+- LED: 피셀 피치, 밝기가 실제 제품군 스펙 범위 내인지
+- 미디어서버: 필요 출력 수/해상도가 선택 서버의 최대 출력 이내인지
+- 센서: 설치 공간 크기가 센서 유효 범위 이내인지
+
+**전력 검증 (SITE-SURVEY.md):**
+- 총 소비전력 ≤ 현장 가용 전력
+  - 초과 시: ❌ + 추가 전력 공사 필요 명시 + 예상 비용 안내
+- 필요 회로 수 ≤ 현장 가용 차단기 수
+
+**네트워크 검증:**
+- 필요 대역폭 (NDI, ArtNet 등)이 현장 네트워크 사양 내인지
+- IP 대역 충돌 가능성
+
+**콘텐츠 사양 검증 (references/codec-reference.md):**
+- 추천 코덱이 선택한 미디어서버에서 지원되는지
+- 비트레이트가 스토리지 I/O 한계 이내인지
+
+**반입 검증 (SITE-SURVEY.md):**
+- 가장 큰 장비의 크기가 출입문/엘리베이터 크기 이내인지
+
+**검증 출력:**
+```
+## Validation Report
+
+| 항목 | 기준값 | 사양값 | 결과 |
+|------|--------|--------|------|
+| 프로젝터 출력 (PT-RQ25K) | 25,000 lm | 필요 18,000 lm | ✅ 충분 |
+| 미디어서버 출력 (Resolume) | 최대 8x 4K | 2x 4K 필요 | ✅ 가능 |
+| 센서 범위 (RealSense D455) | 0.4-6m | 공간 폭 5m | ✅ 커버 |
+| 총 소비전력 vs 가용 전력 | 30A (6,600W) | 5,200W | ✅ 여유 1,400W |
+| 장비 반입 (최대 장비: 120cm) | 출입문 150cm | 120cm | ✅ 통과 |
+```
+
+### 5. Generate TECH-SPEC.md
 
 `templates/TECH-SPEC.md.tmpl`을 기반으로 마크다운을 생성한 뒤, `scripts/md-to-docx.py`로 `.docx`로 변환한다.
 
@@ -144,12 +193,36 @@ SITE-SURVEY.md의 가용 전력과 비교하여 부족 여부를 경고한다.
 - /install-guide 로 설치 매뉴얼을 생성할 수 있습니다
 ```
 
+## Data Handoff (입출력 규격)
+
+### Input (읽는 문서)
+| 문서 | 읽는 필드 | 용도 |
+|------|----------|------|
+| `PROJECT.md` | 프로젝트 유형, 범위 | 타입별 시스템 구성 분기 |
+| `SITE-SURVEY.md` | 가용 전력(A/W), 네트워크 포트, 환경 조건, 반입 경로 크기 | 전력/네트워크 검증, 반입 가능성 확인 |
+| `DISPLAY-CALC.md` | `## Display Summary` 전체 (해상도, 장비, 밝기, 블렌딩) | 디스플레이 서브시스템 자동 반영 |
+| `references/hardware-db.md` | 장비 스펙 전체 | 장비 검증 기준 |
+| `references/codec-reference.md` | 코덱 호환성 테이블 | 콘텐츠 사양 추천 |
+| `references/color-spaces.md` | 색공간 기준 | 색공간 설정 추천 |
+
+### Output (쓰는 필드) → 다음 스킬이 읽는 구조
+| 출력 필드 | 소비 스킬 | 읽는 방식 |
+|----------|----------|----------|
+| `## 장비 목록` 테이블 (모델, 수량, 소비전력) | `/estimate` | 장비비 산출 |
+| `## 장비 목록` 테이블 | `/timeline` | 장비 리드타임 파악 |
+| `## 장비 목록` + `## 네트워크 구성` + `## 전원 순서` | `/install-guide` | 설치 매뉴얼 핵심 소스 |
+| `## 콘텐츠 사양` → 미디어서버, 해상도 | `/content-pipeline` | 코덱/해상도 추천 기준 |
+| `## 장비 목록` → 소모품 포함 장비 | `/maintenance` | 점검 항목 생성 |
+| `## 시스템 구성` 전체 | `/troubleshoot` | 예상 문제 목록 생성 |
+| `## 총 소비전력` | `/estimate` | 전력 관련 비용 반영 |
+
 ## Core Principles
 
 1. **시스템 전체를 본다** — 개별 장비가 아닌 시스템 간 연결과 신호 흐름을 중심으로 기술한다.
 2. **수치 기반** — 모든 스펙은 측정 가능한 수치로 명시한다.
 3. **용도에 맞는 톤** — 클라이언트에게는 쉽게, 내부에는 기술적으로, 외주에는 명확하게.
 4. **전력은 반드시 계산** — 현장에서 가장 흔한 문제가 전력 부족이다. 항상 총 소비전력을 산출하고 가용 전력과 비교한다.
-5. **한 번에 하나의 질문** — 시스템이 많아도 하나씩 질문한다.
-6. **레퍼런스 활용** — references/ 디렉토리의 데이터를 근거로 활용한다.
-7. **언어를 따른다** — 사용자의 언어로 대화하고 문서를 생성한다.
+5. **검증 필수** — 장비 스펙, 전력, 반입 가능성을 `references/`와 SITE-SURVEY.md로 대조한다.
+6. **한 번에 하나의 질문** — 시스템이 많아도 하나씩 질문한다.
+7. **레퍼런스 활용** — references/ 디렉토리의 데이터를 근거로 활용한다.
+8. **언어를 따른다** — 사용자의 언어로 대화하고 문서를 생성한다.

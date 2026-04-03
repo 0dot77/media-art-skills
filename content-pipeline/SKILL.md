@@ -79,6 +79,36 @@ DISPLAY-CALC.md가 있으면 자동 반영.
 - 알파 채널 필요 시 코덱 선택
 - 인터레이스/프로그레시브 혼용
 
+### 3.5. Validation (검증)
+
+추천 결과를 `references/` 데이터와 자동 대조한다:
+
+**코덱 호환성 검증 (references/codec-reference.md):**
+- 추천 코덱이 선택한 미디어서버의 호환 코덱 목록에 있는지
+  - 비호환 시: ❌ + 해당 서버에서 지원하는 대안 코덱 제시
+- 코덱의 디코딩 부하(CPU/GPU)가 미디어서버 성능에 적합한지
+  - 과부하 예상 시: ⚠️ + 더 가벼운 코덱 제안
+
+**미디어서버 출력 검증 (references/hardware-db.md):**
+- 필요 출력 해상도/채널 수가 미디어서버 최대 출력 이내인지
+  - 초과 시: ❌ + 서버 업그레이드 또는 분산 구성 제안
+
+**색공간 검증 (references/color-spaces.md):**
+- 추천 색공간이 디스플레이 기기가 지원하는 색공간과 일치하는지
+- TECH-SPEC.md의 디스플레이 색공간 설정과 일치하는지
+
+**검증 출력:**
+```
+## Validation Report
+
+| 항목 | 기준 (references) | 추천값 | 결과 |
+|------|-------------------|--------|------|
+| HAP Q ↔ Resolume Arena | 호환 (GPU 디코딩) | HAP Q | ✅ 호환 |
+| 4K 60fps 출력 ↔ Resolume | 최대 8x 4K | 2x 4K | ✅ 가능 |
+| sRGB ↔ 프로젝터 색공간 | sRGB 지원 | sRGB | ✅ 일치 |
+| SSD I/O ↔ 비트레이트 | 500 MB/s | ~300 MB/s | ✅ 여유 |
+```
+
 ### 4. Generate Content Spec Guide
 
 콘텐츠 크리에이터에게 전달할 스펙 가이드:
@@ -123,10 +153,27 @@ Storage: SSD required (read speed > 500 MB/s)
 - /color-check 로 색공간 설정을 확인할 수 있습니다
 ```
 
+## Data Handoff (입출력 규격)
+
+### Input (읽는 문서)
+| 문서 | 읽는 필드 | 용도 |
+|------|----------|------|
+| `TECH-SPEC.md` | `## 콘텐츠 사양` → 미디어서버 종류 | 코덱 호환성 매칭 |
+| `DISPLAY-CALC.md` | `## Content Spec for Creators` → 해상도, FPS | 콘텐츠 출력 해상도 기준 |
+| `references/codec-reference.md` | 코덱별 호환성, 디코딩 부하, 비트레이트 | 코덱 추천 근거 |
+| `references/color-spaces.md` | 디스플레이별 색공간 | 색공간 추천 |
+
+### Output (쓰는 필드) → 다음 스킬이 읽는 구조
+| 출력 필드 | 소비 스킬 | 읽는 방식 |
+|----------|----------|----------|
+| `## Content Specification Guide` → 해상도, 코덱, FPS, 색공간 | `/render-check` | 검증 기준으로 사용 |
+| `## Content Specification Guide` → 색공간 | `/color-check` | 파이프라인 일관성 체크 기준 |
+
 ## Core Principles
 
 1. **실수 방지가 목표** — 잘못된 코덱/해상도로 렌더링한 콘텐츠를 현장에서 발견하면 치명적이다.
 2. **크리에이터 관점** — 기술자가 아닌 콘텐츠 제작자가 이해할 수 있는 언어로 쓴다.
-3. **레퍼런스 기반** — `references/` 데이터를 근거로 추천한다.
-4. **한 번에 하나의 질문**
-5. **언어를 따른다**
+3. **검증 필수** — 추천 코덱/해상도를 `references/` 데이터와 미디어서버 스펙으로 대조한다.
+4. **레퍼런스 기반** — `references/` 데이터를 근거로 추천한다.
+5. **한 번에 하나의 질문**
+6. **언어를 따른다**
