@@ -26,44 +26,27 @@ git clone https://github.com/0dot77/media-art-skills.git
 cd media-art-skills
 ```
 
-### 3. Python 의존성 설치
+### 3. 스킬 등록
 
-`.docx` (Word) 문서 생성을 위해 `python-docx`를 설치한다:
+`setup` 스크립트가 python-docx 설치 + 스킬 심링크 등록을 한번에 처리한다.
 
-```bash
-pip install python-docx
-```
-
-### 4. 스킬 등록
-
-`setup` 스크립트를 실행하면 각 스킬이 `~/.claude/skills/`에 심볼릭 링크로 등록된다:
+#### 글로벌 설치 (어디서든 사용)
 
 ```bash
 ./setup
 ```
 
-출력 예시:
-```
-media-art-skills installer
-==========================
+모든 스킬이 `~/.claude/skills/`에 등록되어, 어떤 폴더에서든 사용 가능.
 
-  linked: estimate
-  linked: display-calc
-  linked: tech-spec
-  ...
+#### 로컬 설치 (특정 프로젝트에서만 사용)
 
-Done! 16 skills installed, 0 skipped.
-
-Installed skills:
-  /estimate
-  /display-calc
-  /tech-spec
-  ...
-
-Restart Claude Code to use the new slash commands.
+```bash
+./setup --local /path/to/my-project
 ```
 
-### 5. Claude Code 재시작
+해당 프로젝트의 `.claude/skills/`에만 등록되어, 그 폴더에서 Claude Code를 실행할 때만 스킬이 활성화된다.
+
+### 4. Claude Code 재시작
 
 설치 후 Claude Code를 재시작하면 슬래시 명령어로 스킬을 사용할 수 있다.
 
