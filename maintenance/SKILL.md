@@ -1,0 +1,113 @@
+---
+name: maintenance
+description: "Maintenance schedule and checklist generator for media art installations. Use when the user wants to create daily/weekly/monthly maintenance plans for long-running installations. Triggers on /maintenance or requests for 유지보수, 점검, maintenance."
+---
+
+# /maintenance — 유지보수 일정/체크리스트
+
+> **Role**: Site Engineer / Operations Manager
+> **Trigger**: User invokes `/maintenance` or asks about 유지보수, 점검, maintenance
+> **Output**: `{프로젝트 폴더}/MAINTENANCE.docx` + `MAINTENANCE.md`
+
+## Purpose
+
+장기 운영되는 미디어아트 설치의 유지보수 일정과 체크리스트를 생성한다. 일일/주간/월간 점검 항목, 소모품 관리, 비상 대응 절차를 포함한다.
+
+## Behavior
+
+### 0. Save Location
+
+> "문서를 어디에 저장할까요?"
+
+### 1. Context Check
+
+`{프로젝트 폴더}`에서 확인:
+- `TECH-SPEC.md` — 장비 목록, 소모품 파악
+- `INSTALL-GUIDE.md` — 시스템 구성, 시작/종료 절차
+- `TROUBLESHOOT.md` — 알려진 문제 목록
+
+### 2. Input Gathering (한 번에 하나씩)
+
+**Q1 — 운영 기간**
+> "설치 운영 기간을 알려주세요."
+
+- 기간 (1주 / 1개월 / 6개월 / 상설 등)
+- 운영 시간 (매일 9-18시, 24시간 등)
+
+**Q2 — 관리 인력**
+> "현장 관리를 누가 하나요?"
+
+- 전담 기술 스태프 (기술 수준 파악)
+- 비전문가 (가이드, 안내원 등) → 더 단순한 체크리스트
+- 원격 모니터링 → 원격 접속 절차 포함
+
+**Q3 — 특이 사항**
+> "운영 중 특별히 주의할 점이 있나요?"
+
+관객 접촉, 야외 설치(날씨), 무인 운영 등.
+
+### 3. Checklist Generation
+
+TECH-SPEC.md의 장비 목록을 기반으로 점검 항목을 생성:
+
+**일일 체크리스트**
+- [ ] 시스템 정상 기동 확인
+- [ ] 디스플레이 출력 정상 확인 (색상, 밝기, 정렬)
+- [ ] 오디오 출력 확인
+- [ ] 센서 반응 테스트
+- [ ] 콘텐츠 재생 정상 확인
+- [ ] 이상 소음/발열 확인
+- [ ] 관객 안전 시설 확인
+
+**주간 체크리스트**
+- [ ] 케이블 접속 상태 점검
+- [ ] 먼지/오염 제거 (프로젝터 필터, LED 표면)
+- [ ] 시스템 로그 확인
+- [ ] 스토리지 여유 공간 확인
+- [ ] 소프트웨어 업데이트 확인 (필요 시에만)
+- [ ] 백업 시스템 테스트
+
+**월간 체크리스트**
+- [ ] 프로젝터 필터 교체/청소
+- [ ] 프로젝터 캘리브레이션 재확인
+- [ ] 전체 케이블 점검
+- [ ] UPS 배터리 상태 확인
+- [ ] 환기 시스템 점검
+- [ ] 소모품 재고 확인
+
+**소모품 관리표**
+- 프로젝터 필터/램프 (교체 주기, 재고, 발주처)
+- 기타 소모품
+
+### 4. Emergency Procedures
+
+- 전체 시스템 다운 시 재시작 절차 (INSTALL-GUIDE.md의 startup sequence 참조)
+- 개별 장비 고장 시 대응
+- 비상 연락처 목록
+- 에스컬레이션 순서 (현장 스태프 → PM → TD)
+
+### 5. Generate
+
+```
+{프로젝트 폴더}/MAINTENANCE.md    ← 원본
+{프로젝트 폴더}/MAINTENANCE.docx  ← Word
+```
+
+### 6. Post-generation
+
+```
+유지보수 일정이 생성되었습니다.
+운영 기간: N개월
+일일 N항목 / 주간 N항목 / 월간 N항목 / 소모품 N종
+
+다음 단계:
+- /troubleshoot 로 문제 대응 가이드를 함께 비치하세요
+```
+
+## Core Principles
+
+1. **비전문가도 실행 가능** — 체크리스트 형식으로, 따라하면 되는 수준.
+2. **예방 중심** — 고장 후 수리가 아닌, 고장 전 점검이 목표.
+3. **소모품 선제 관리** — 재고가 바닥나면 교체 불가. 선제적 발주.
+4. **한 번에 하나의 질문**
+5. **언어를 따른다**

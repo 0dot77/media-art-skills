@@ -10,7 +10,7 @@
 - **테크니컬 디렉터 (TD)**
 - **설치 엔지니어**
 
-기존 [medialab-stack](https://github.com/taeyang/medialab-stack)(개인 아티스트/교육자용)과 겹치지 않으며, **클라이언트 납품과 현장 설치**를 전제로 설계되었다.
+기존 [medialab-stack](https://github.com/0dot77/medialab-stack)(개인 아티스트/교육자용)과 겹치지 않으며, **클라이언트 납품과 현장 설치**를 전제로 설계되었다.
 
 ## 설치
 
@@ -22,7 +22,7 @@
 ### 2. 저장소 클론
 
 ```bash
-git clone https://github.com/taeyang/media-art-skills.git
+git clone https://github.com/0dot77/media-art-skills.git
 cd media-art-skills
 ```
 
@@ -166,7 +166,7 @@ media-art-skills/
 
 ## 기여
 
-버그 리포트나 새 스킬 제안은 [Issues](https://github.com/taeyang/media-art-skills/issues)에 남겨주세요.
+버그 리포트나 새 스킬 제안은 [Issues](https://github.com/0dot77/media-art-skills/issues)에 남겨주세요.
 
 ## 라이선스
 

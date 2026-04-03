@@ -11,6 +11,17 @@ echo "media-art-skills installer"
 echo "=========================="
 echo ""
 
+# Python 의존성 설치 (python-docx for .docx export)
+echo "Installing Python dependencies..."
+if command -v pip3 &> /dev/null; then
+    pip3 install -q python-docx 2>/dev/null && echo "  ✅ python-docx installed" || echo "  ⚠️  python-docx install failed (pip3). Try: pip install python-docx"
+elif command -v pip &> /dev/null; then
+    pip install -q python-docx 2>/dev/null && echo "  ✅ python-docx installed" || echo "  ⚠️  python-docx install failed (pip). Try: pip install python-docx"
+else
+    echo "  ⚠️  pip not found. Install python-docx manually: pip install python-docx"
+fi
+echo ""
+
 # Claude Code 스킬 디렉토리 확인/생성
 if [ ! -d "$SKILL_DIR" ]; then
     echo "Creating skills directory: $SKILL_DIR"
