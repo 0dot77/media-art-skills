@@ -7,13 +7,19 @@ description: "Render pipeline validator for media art content. Use when the user
 
 > **Role**: Technical Director
 > **Trigger**: User invokes `/render-check` or asks about 렌더 검증, 렌더 체크, 파일 확인
-> **Output**: 검증 결과 (터미널 출력)
+> **Output**: `{프로젝트 폴더}/RENDER-CHECK.docx` + `RENDER-CHECK.md`
 
 ## Purpose
 
 렌더링된 미디어 파일이 프로젝트 사양에 맞는지 검증한다. 해상도, 코덱, 프레임레이트, 파일 크기, 오디오 채널 등을 체크하여 현장에서의 문제를 사전 방지한다.
 
 ## Behavior
+
+### 0. Save Location
+
+> "문서를 어디에 저장할까요? (폴더 경로를 지정해주세요)"
+
+사용자가 지정한 폴더를 `{프로젝트 폴더}`로 사용한다. 이후 같은 세션에서는 동일 경로를 재사용한다.
 
 ### 1. Context Check
 

@@ -7,13 +7,19 @@ description: "Color space and calibration checker for media art installations. U
 
 > **Role**: Technical Director
 > **Trigger**: User invokes `/color-check` or asks about 색공간, 컬러 체크, 캘리브레이션
-> **Output**: 검증 결과 (터미널) 또는 `{프로젝트 폴더}/COLOR-CHECK.md`
+> **Output**: `{프로젝트 폴더}/COLOR-CHECK.docx` + `COLOR-CHECK.md`
 
 ## Purpose
 
 미디어아트 설치의 색공간 설정을 파이프라인 전체에 걸쳐 검증한다. 제작(모니터) → 출력(미디어서버) → 표시(프로젝터/LED) 각 단계의 색공간/감마/색온도 일관성을 확인하고 불일치를 찾아낸다.
 
 ## Behavior
+
+### 0. Save Location
+
+> "문서를 어디에 저장할까요? (폴더 경로를 지정해주세요)"
+
+사용자가 지정한 폴더를 `{프로젝트 폴더}`로 사용한다. 이후 같은 세션에서는 동일 경로를 재사용한다.
 
 ### 1. Context Check
 
@@ -97,11 +103,11 @@ Projector B: 7200K / sRGB / 2.2 / 3100 lm
 
 ### 4. Output
 
-간단한 검증은 터미널에 출력. 문서화가 필요하면:
+검증 결과를 자동으로 `.docx`와 `.md`로 저장한다:
 
 ```
-{프로젝트 폴더}/COLOR-CHECK.md
-{프로젝트 폴더}/COLOR-CHECK.docx
+{프로젝트 폴더}/COLOR-CHECK.md    ← 원본
+{프로젝트 폴더}/COLOR-CHECK.docx  ← Word
 ```
 
 ### 5. Post-generation

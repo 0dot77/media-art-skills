@@ -7,7 +7,7 @@ description: "Content pipeline manager for media art installations. Use when the
 
 > **Role**: Technical Director
 > **Trigger**: User invokes `/content-pipeline` or asks about 콘텐츠 파이프라인, 미디어 에셋, 코덱, 포맷
-> **Output**: 콘텐츠 스펙 가이드 (터미널 출력 또는 `{프로젝트 폴더}/CONTENT-SPEC.docx`)
+> **Output**: `{프로젝트 폴더}/CONTENT-SPEC.docx` + `CONTENT-SPEC.md`
 
 ## Purpose
 
@@ -106,7 +106,12 @@ Storage: SSD required (read speed > 500 MB/s)
 ──────────────────────────────────────
 ```
 
-필요시 `.docx`로도 저장.
+스펙 가이드를 자동으로 `.docx`와 `.md`로 저장한다:
+
+```
+{프로젝트 폴더}/CONTENT-SPEC.md    ← 원본
+{프로젝트 폴더}/CONTENT-SPEC.docx  ← Word
+```
 
 ### 5. Post-generation
 

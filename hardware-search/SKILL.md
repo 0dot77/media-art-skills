@@ -7,7 +7,7 @@ description: "Hardware specification search and comparison for media art install
 
 > **Role**: Technical Director
 > **Trigger**: User invokes `/hardware-search` or asks about 장비 검색, 장비 비교, 프로젝터 추천
-> **Output**: 터미널 비교표 또는 `{프로젝트 폴더}/HARDWARE-COMPARISON.docx`
+> **Output**: `{프로젝트 폴더}/HARDWARE-COMPARISON.docx` + `HARDWARE-COMPARISON.md`
 
 ## Purpose
 
@@ -15,9 +15,11 @@ description: "Hardware specification search and comparison for media art install
 
 ## Behavior
 
-### 0. Save Location (선택)
+### 0. Save Location
 
-문서 저장이 필요한 경우에만 경로를 질문한다. 단순 비교는 터미널에 바로 출력.
+> "문서를 어디에 저장할까요? (폴더 경로를 지정해주세요)"
+
+사용자가 지정한 폴더를 `{프로젝트 폴더}`로 사용한다. 폴더가 없으면 자동 생성. 이후 같은 세션에서는 동일 경로를 재사용한다.
 
 ### 1. Context Check
 
@@ -82,11 +84,11 @@ description: "Hardware specification search and comparison for media art install
 
 ### 4. Output
 
-단순 비교는 터미널에 바로 출력. 문서화가 필요하면 `.docx`로 저장:
+비교 결과를 자동으로 `.docx`와 `.md`로 저장한다:
 
 ```
-{프로젝트 폴더}/HARDWARE-COMPARISON.md
-{프로젝트 폴더}/HARDWARE-COMPARISON.docx
+{프로젝트 폴더}/HARDWARE-COMPARISON.md    ← 원본
+{프로젝트 폴더}/HARDWARE-COMPARISON.docx  ← Word
 ```
 
 ### 5. Post-generation

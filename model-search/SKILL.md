@@ -7,13 +7,19 @@ description: "3D asset search tool for media art production. Use when the user w
 
 > **Role**: CG Artist / Technical Director
 > **Trigger**: User invokes `/model-search` or asks about 3D 모델 검색, 에셋 검색, 모델링 리서치
-> **Output**: 검색 결과 (터미널) 또는 `{프로젝트 폴더}/MODEL-SEARCH.md`
+> **Output**: `{프로젝트 폴더}/MODEL-SEARCH.docx` + `MODEL-SEARCH.md`
 
 ## Purpose
 
 미디어아트 프로젝트에 필요한 3D 모델, 텍스처, CG 에셋을 온라인 마켓플레이스와 무료 저장소에서 검색한다. 키워드, 카테고리, 포맷, 가격대 등을 기준으로 적합한 에셋을 찾아 비교한다.
 
 ## Behavior
+
+### 0. Save Location
+
+> "문서를 어디에 저장할까요? (폴더 경로를 지정해주세요)"
+
+사용자가 지정한 폴더를 `{프로젝트 폴더}`로 사용한다. 폴더가 없으면 자동 생성. 이후 같은 세션에서는 동일 경로를 재사용한다.
 
 ### 1. Context Check
 
@@ -90,7 +96,12 @@ Found: 12 results
 ──────────────────────────────────────────
 ```
 
-필요 시 `{프로젝트 폴더}/MODEL-SEARCH.md`로 저장.
+검색 결과를 자동으로 `.docx`와 `.md`로 저장한다:
+
+```
+{프로젝트 폴더}/MODEL-SEARCH.md    ← 원본
+{프로젝트 폴더}/MODEL-SEARCH.docx  ← Word
+```
 
 ### 5. Post-generation
 
