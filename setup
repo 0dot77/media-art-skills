@@ -1,0 +1,67 @@
+#!/bin/bash
+set -euo pipefail
+
+# media-art-skills installer
+# SKILL.md가 있는 각 스킬을 개별 심볼릭 링크로 Claude Code 스킬 디렉토리에 등록한다.
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+SKILL_DIR="$HOME/.claude/skills"
+
+echo "media-art-skills installer"
+echo "=========================="
+echo ""
+
+# Claude Code 스킬 디렉토리 확인/생성
+if [ ! -d "$SKILL_DIR" ]; then
+    echo "Creating skills directory: $SKILL_DIR"
+    mkdir -p "$SKILL_DIR"
+fi
+
+# SKILL.md가 있는 각 디렉토리를 개별 링크로 등록
+installed=0
+skipped=0
+
+for skill_path in "$SCRIPT_DIR"/*/; do
+    [ -f "$skill_path/SKILL.md" ] || continue
+
+    name=$(basename "$skill_path")
+    target="$SKILL_DIR/$name"
+
+    if [ -L "$target" ]; then
+        existing=$(readlink "$target")
+        if [ "$existing" = "$skill_path" ]; then
+            echo "  skip (already linked): $name"
+            skipped=$((skipped + 1))
+            continue
+        fi
+        echo "  Existing symlink: $target -> $existing"
+        read -rp "  Overwrite with media-art-skills/$name? [y/N] " answer
+        if [[ "$answer" =~ ^[Yy]$ ]]; then
+            rm "$target"
+        else
+            echo "  skipped."
+            skipped=$((skipped + 1))
+            continue
+        fi
+    elif [ -e "$target" ]; then
+        echo "  skip (exists, not a symlink): $name"
+        skipped=$((skipped + 1))
+        continue
+    fi
+
+    ln -s "$skill_path" "$target"
+    echo "  linked: $name"
+    installed=$((installed + 1))
+done
+
+echo ""
+echo "Done! $installed skills installed, $skipped skipped."
+echo ""
+echo "Installed skills:"
+for skill_path in "$SCRIPT_DIR"/*/; do
+    [ -f "$skill_path/SKILL.md" ] || continue
+    name=$(basename "$skill_path")
+    echo "  /$name"
+done
+echo ""
+echo "Restart Claude Code to use the new slash commands."
